@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -6,190 +6,52 @@
 <title>ALBA — Manette</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  height:100%;background:#0a0010;color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  overflow:hidden;touch-action:manipulation;
-}
+html,body{height:100%;background:#0a0010;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden;touch-action:manipulation;}
 body{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;gap:1.2rem}
-
 .logo{font-size:11px;letter-spacing:5px;color:#b44fff;text-transform:uppercase;opacity:.8}
-
-.status{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  border-radius:12px;padding:.75rem 1.4rem;font-size:13px;color:#888;
-  text-align:center;width:100%;max-width:320px;line-height:1.4;
-}
+.status{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.75rem 1.4rem;font-size:13px;color:#888;text-align:center;width:100%;max-width:320px;line-height:1.4;}
 .status.ok{color:#4fff8f;border-color:rgba(79,255,143,.3);background:rgba(79,255,143,.05)}
 .status.err{color:#ff6060;border-color:rgba(255,96,96,.3)}
-
-.ip-row{display:flex;gap:.5rem;width:100%;max-width:320px}
-.ip-row input{
-  flex:1;background:#0d001a;border:1px solid rgba(180,79,255,.3);border-radius:8px;
-  padding:.55rem .8rem;color:#f0e8ff;font-family:monospace;font-size:15px;outline:none;
-}
-.ip-row button{
-  background:rgba(180,79,255,.2);border:1px solid rgba(180,79,255,.4);
-  border-radius:8px;padding:.55rem 1rem;color:#b44fff;font-size:13px;font-weight:700;cursor:pointer;
-}
-
-.btn{
-  width:240px;height:240px;border-radius:50%;
-  background:linear-gradient(145deg,#c060ff,#7010c0);
-  border:none;color:#fff;cursor:pointer;
-  box-shadow:0 0 60px rgba(180,79,255,.55),inset 0 1px 0 rgba(255,255,255,.2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  user-select:none;-webkit-tap-highlight-color:transparent;
-  transition:transform .08s,box-shadow .08s;flex-shrink:0;
-}
-.btn:active,.btn.pressed{
-  transform:scale(.88);
-  box-shadow:0 0 20px rgba(180,79,255,.25),inset 0 2px 4px rgba(0,0,0,.4);
-}
+.btn{width:240px;height:240px;border-radius:50%;background:linear-gradient(145deg,#c060ff,#7010c0);border:none;color:#fff;cursor:pointer;box-shadow:0 0 60px rgba(180,79,255,.55),inset 0 1px 0 rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;flex-shrink:0;}
+.btn:active,.btn.pressed{transform:scale(.88);box-shadow:0 0 20px rgba(180,79,255,.25),inset 0 2px 4px rgba(0,0,0,.4);}
 .btn .icon{font-size:56px;line-height:1}
 .btn .label{font-size:15px;font-weight:900;letter-spacing:4px;text-transform:uppercase}
-
 .force-bar-wrap{width:240px;height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
 .force-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#b44fff,#4fff8f);border-radius:6px;transition:width .15s}
-
 .hint{font-size:12px;color:#444;text-align:center;line-height:1.8;max-width:260px}
-.ios-btn{
-  background:rgba(180,79,255,.15);border:1px solid rgba(180,79,255,.4);
-  color:#b44fff;padding:.75rem 1.6rem;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;
-}
+.ios-btn{background:rgba(180,79,255,.15);border:1px solid rgba(180,79,255,.4);color:#b44fff;padding:.75rem 1.6rem;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
 </style>
 </head>
 <body>
-
 <div class="logo">ALBA JUMP OVER · Manette</div>
-
-<div class="ip-row">
-  <input id="ip-input" type="text" placeholder="IP du Mac — ex: 192.168.1.42"
-    inputmode="decimal" autocomplete="off" spellcheck="false"
-    onkeydown="if(event.key==='Enter')connect()">
-  <button onclick="connect()">🔌</button>
-</div>
-
-<div class="status" id="status">Entre l'IP du Mac ci-dessus</div>
-
-<button class="btn" id="jumpBtn"
-  ontouchstart="onBtnTouch(event)"
-  onmousedown="onBtnMouse(event)">
+<div class="status" id="status">⏳ Connexion au serveur…</div>
+<button class="btn" id="jumpBtn" ontouchstart="onBtnTouch(event)" onmousedown="onBtnMouse(event)">
   <span class="icon">🦘</span>
   <span class="label">Saute</span>
 </button>
-
-<div class="force-bar-wrap">
-  <div class="force-bar-fill" id="forceBar"></div>
-</div>
-
+<div class="force-bar-wrap"><div class="force-bar-fill" id="forceBar"></div></div>
 <div id="iosPrompt" style="display:none">
   <button class="ios-btn" onclick="requestAccel()">🎯 Activer la détection de saut</button>
 </div>
-
-<div class="hint" id="hint">
-  Saute avec le téléphone dans la main.<br>
-  <b>Haut = grosses canettes.</b>
-</div>
-
+<div class="hint" id="hint">Saute avec le téléphone dans la main.<br><b>Haut = grosses canettes.</b></div>
 <script>
-const statusEl = document.getElementById('status');
-const jumpBtn  = document.getElementById('jumpBtn');
-const forceBar = document.getElementById('forceBar');
-const ipInput  = document.getElementById('ip-input');
-
-let ws = null;
-let lastJump = 0;
-const COOLDOWN = 400;
-
-function setStatus(msg, cls='') {
-  statusEl.textContent = msg;
-  statusEl.className = 'status ' + cls;
-}
-
-// Charge IP sauvegardée
-const savedIP = localStorage.getItem('alba_ws_ip') || '';
-if (savedIP) { ipInput.value = savedIP; connect(); }
-
-function connect() {
-  const ip = ipInput.value.trim();
-  if (!ip) return;
-  localStorage.setItem('alba_ws_ip', ip);
-  if (ws) { try { ws.close(); } catch {} }
-  setStatus('⏳ Connexion à ' + ip + '…');
-  ws = new WebSocket('ws://' + ip + ':8765');
-  ws.onopen  = () => setStatus('✅ Connecté ! Saute ou appuie.', 'ok');
-  ws.onclose = () => { setStatus('🔴 Déconnecté — reconnexion…', 'err'); setTimeout(connect, 2000); };
-  ws.onerror = () => setStatus('❌ Impossible de joindre ' + ip, 'err');
-}
-
-function sendJump(force) {
-  const f = Math.max(0.25, Math.min(1.0, force || 0.6));
-  forceBar.style.width = Math.round(f * 100) + '%';
-  setTimeout(() => { forceBar.style.width = '0%'; }, 600);
-  if (ws && ws.readyState === 1) ws.send('jump:' + f.toFixed(2));
-}
-
-function triggerJump(force) {
-  const now = Date.now();
-  if (now - lastJump < COOLDOWN) return;
-  lastJump = now;
-  jumpBtn.classList.add('pressed');
-  setTimeout(() => jumpBtn.classList.remove('pressed'), 130);
-  if (navigator.vibrate) navigator.vibrate([30]);
-  sendJump(force || 0.6);
-}
-
-function onBtnTouch(e) { e.preventDefault(); triggerJump(0.6); }
-function onBtnMouse(e) { e.preventDefault(); triggerJump(0.6); }
-
-// ── Accéléromètre — mesure hauteur de saut ───────────────────────────────────
-const ACCEL_THRESHOLD = 14;
-const DT = 0.02;
-let jumping = false, vy = 0, peakVy = 0;
-
-function processAccel(az) {
-  if (!jumping) {
-    if (az > ACCEL_THRESHOLD) { jumping=true; vy=0; peakVy=0; }
-  } else {
-    vy += az * DT;
-    if (vy > peakVy) peakVy = vy;
-    if (az < -8 && peakVy > 0.5) {
-      const height = (peakVy * peakVy) / (2 * 9.81);
-      const force = 0.25 + Math.min(1.0, height / 0.50) * 0.75;
-      triggerJump(force);
-      jumping=false; vy=0; peakVy=0;
-    }
-  }
-}
-
-function startAccel() {
-  document.getElementById('hint').innerHTML = '🎯 Capteur actif ! <b>Saute haut</b> pour<br>passer les grandes canettes.';
-  window.addEventListener('devicemotion', e => {
-    let az;
-    if (e.acceleration && e.acceleration.y !== null) {
-      az = e.acceleration.y;
-    } else {
-      az = ((e.accelerationIncludingGravity||{}).y||0) - 9.81;
-    }
-    processAccel(az);
-  });
-}
-
-function requestAccel() {
-  document.getElementById('iosPrompt').style.display = 'none';
-  DeviceMotionEvent.requestPermission()
-    .then(s => { if (s === 'granted') startAccel(); })
-    .catch(console.error);
-}
-
-if (window.DeviceMotionEvent) {
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    document.getElementById('iosPrompt').style.display = 'block';
-  } else {
-    startAccel();
-  }
-}
+const statusEl=document.getElementById('status'),jumpBtn=document.getElementById('jumpBtn'),forceBar=document.getElementById('forceBar');
+const WS_URL='wss://alba-ws.onrender.com';
+let ws=null,lastJump=0;
+const COOLDOWN=400;
+function setStatus(msg,cls=''){statusEl.textContent=msg;statusEl.className='status '+cls;}
+function connect(){if(ws){try{ws.close();}catch{}}setStatus('⏳ Connexion…');ws=new WebSocket(WS_URL);ws.onopen=()=>setStatus('✅ Connecté ! Saute ou appuie.','ok');ws.onclose=()=>{setStatus('🔴 Déconnecté — reconnexion…','err');setTimeout(connect,2000);};ws.onerror=()=>setStatus('❌ Erreur de connexion','err');}
+connect();
+function sendJump(force){const f=Math.max(0.25,Math.min(1.0,force||0.6));forceBar.style.width=Math.round(f*100)+'%';setTimeout(()=>{forceBar.style.width='0%';},600);if(ws&&ws.readyState===1)ws.send('jump:'+f.toFixed(2));}
+function triggerJump(force){const now=Date.now();if(now-lastJump<COOLDOWN)return;lastJump=now;jumpBtn.classList.add('pressed');setTimeout(()=>jumpBtn.classList.remove('pressed'),130);if(navigator.vibrate)navigator.vibrate([30]);sendJump(force||0.6);}
+function onBtnTouch(e){e.preventDefault();triggerJump(0.6);}
+function onBtnMouse(e){e.preventDefault();triggerJump(0.6);}
+const ACCEL_THRESHOLD=14,DT=0.02;
+let jumping=false,vy=0,peakVy=0;
+function processAccel(az){if(!jumping){if(az>ACCEL_THRESHOLD){jumping=true;vy=0;peakVy=0;}}else{vy+=az*DT;if(vy>peakVy)peakVy=vy;if(az<-8&&peakVy>0.5){const height=(peakVy*peakVy)/(2*9.81);const force=0.25+Math.min(1.0,height/0.50)*0.75;triggerJump(force);jumping=false;vy=0;peakVy=0;}}}
+function startAccel(){document.getElementById('hint').innerHTML='🎯 Capteur actif ! <b>Saute haut</b> pour<br>passer les grandes canettes.';window.addEventListener('devicemotion',e=>{let az;if(e.acceleration&&e.acceleration.y!==null){az=e.acceleration.y;}else{az=((e.accelerationIncludingGravity||{}).y||0)-9.81;}processAccel(az);});}
+function requestAccel(){document.getElementById('iosPrompt').style.display='none';DeviceMotionEvent.requestPermission().then(s=>{if(s==='granted')startAccel();}).catch(console.error);}
+if(window.DeviceMotionEvent){if(typeof DeviceMotionEvent.requestPermission==='function'){document.getElementById('iosPrompt').style.display='block';}else{startAccel();}}
 </script>
 </body>
 </html>
